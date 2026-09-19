@@ -1,0 +1,258 @@
+/* Formulário de contato */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f5f5f5;
+}
+
+#formContato {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#formContato div {
+  margin-bottom: 15px;
+}
+
+#formContato label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#formContato input,
+#formContato textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+#formContato input:focus,
+#formContato textarea:focus {
+  outline: none;
+  border-color: #1f2937;
+}
+
+#formContato textarea {
+  resize: vertical;
+}
+
+/* Padrão das seções */
+
+section {
+  padding: 60px 20px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+#sobre p {
+  max-width: 750px;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+#sobre,
+#projetos {
+  background-color: white;
+}
+
+#servicos,
+#contato {
+  background-color: #f5f5f5;
+}
+
+section h2 {
+  font-size: 32px;
+  color: #1f2937;
+  margin-bottom: 30px;
+}
+
+#inicio {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+#inicio p {
+  font-size: 20px;
+  max-width: 650px;
+  margin-bottom: 25px;
+}
+#inicio a {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #1f2937;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+#inicio a:hover {
+  opacity: 0.8;
+}
+
+/* Cards de serviços */
+
+.servicos-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Cards de projetos */
+
+.projetos-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Responsividade para telas menores */
+
+@media (max-width: 768px) {
+  .servicos-container,
+  .projetos-container {
+    flex-direction: column;
+  }
+  nav {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  nav div {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 15px;
+  }
+}
+
+/* Rodapé */
+
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+  background-color: #1f2937;
+  color: white;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* Cabeçalho */
+
+header {
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+nav {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav > a {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+nav div {
+  display: flex;
+  gap: 20px;
+}
+
+nav div a {
+  text-decoration: none;
+}
+
+header {
+  background-color: #1f2937;
+}
+
+nav > a {
+  color: white;
+}
+
+nav div a {
+  color: white;
+}
+
+nav a:hover {
+  opacity: 0.7;
+}
+
+#formContato button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+#formContato button:hover {
+  opacity: 0.8;
+}
+
+.servicos-container article,
+.projetos-container article {
+  flex: 1;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.servicos-container article:hover,
+.projetos-container article:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.servicos-container article,
+.projetos-container article {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.servicos-container article h3,
+.projetos-container article h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.servicos-container article p,
+.projetos-container article p {
+  margin-bottom: 20px;
+}
+
+.projetos-container article a {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #1f2937;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.projetos-container article a:hover {
+  opacity: 0.8;
+}
