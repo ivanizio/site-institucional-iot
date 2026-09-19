@@ -49,7 +49,7 @@ app.use("/contato", contatoRoutes);
 
 app.use("/auth", authRoutes);
 
-const PORTA = 3000;
+const PORTA = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.send("Servidor Express funcionando!");
