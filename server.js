@@ -2,8 +2,6 @@ require("dotenv").config();
 
 const express = require("express");
 
-const cors = require("cors");
-
 const session = require("express-session");
 
 const contatoRoutes = require("./routes/contatoRoutes");
@@ -16,24 +14,20 @@ require("./database/database");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "http://127.0.0.1:5500",
-  }),
-);
-
 app.use(express.json());
 
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    sameSite: "lax",
-    maxAge: 30 * 60 * 1000
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 30 * 60 * 1000,
+    },
+  }),
+);
 
 app.use(express.static(__dirname + "/public"));
 
