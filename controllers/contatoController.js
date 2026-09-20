@@ -1,6 +1,6 @@
-const db = require("../database/database");
+const dbPostgres = require("../database/postgres");
 
-function enviarContato(req, res) {
+async function enviarContato(req, res) {
   const dados = req.body;
 
   if (!dados.nome?.trim() || !dados.email?.trim() || !dados.mensagem?.trim()) {
@@ -17,44 +17,38 @@ function enviarContato(req, res) {
     });
   }
 
-  const inserirContato = db.prepare(`
-    INSERT INTO contatos (nome, email, mensagem)
-    VALUES (?, ?, ?)
-`);
-
-  const resultado = inserirContato.run(
-    dados.nome.trim(),
-    dados.email.trim(),
-    dados.mensagem.trim(),
+  const resultado = await dbPostgres.query(
+    `INSERT INTO contatos (nome, email, mensagem)
+     VALUES ($1, $2, $3)
+     RETURNING *`,
+    [dados.nome, dados.email, dados.mensagem],
   );
 
-  console.log("Contato salvo com ID:", resultado.lastInsertRowid);
+  console.log("Contato salvo com ID:", resultado.rows[0].id);
 
   res.json({
     mensagem: "Mensagem enviada com sucesso!",
   });
 }
 
-function listarContatos(req, res) {
-  const buscarContatos = db.prepare(`
-    SELECT * FROM contatos
-    ORDER BY id DESC
-`);
+async function listarContatos(req, res) {
+  const resultado = await dbPostgres.query(
+    "SELECT * FROM contatos ORDER BY id DESC",
+  );
 
-  const contatos = buscarContatos.all();
-
-  res.json(contatos);
+  res.json(resultado.rows);
 }
 
-function buscarContatoPorId(req, res) {
+async function buscarContatoPorId(req, res) {
   const id = req.params.id;
 
-  const buscarContato = db.prepare(`
-        SELECT * FROM contatos
-        WHERE id = ?
-    `);
+  const resultado = await dbPostgres.query(
+    `SELECT * FROM contatos
+     WHERE id = $1`,
+    [id],
+  );
 
-  const contato = buscarContato.get(id);
+  const contato = resultado.rows[0];
 
   if (!contato) {
     return res.status(404).json({
@@ -65,17 +59,16 @@ function buscarContatoPorId(req, res) {
   res.json(contato);
 }
 
-function excluirContato(req, res) {
+async function excluirContato(req, res) {
   const id = req.params.id;
 
-  const excluir = db.prepare(`
-        DELETE FROM contatos
-        WHERE id = ?
-    `);
+  const resultado = await dbPostgres.query(
+    `DELETE FROM contatos
+     WHERE id = $1`,
+    [id],
+  );
 
-  const resultado = excluir.run(id);
-
-  if (resultado.changes === 0) {
+  if (resultado.rowCount === 0) {
     return res.status(404).json({
       mensagem: "Contato não encontrado.",
     });
@@ -86,7 +79,7 @@ function excluirContato(req, res) {
   });
 }
 
-function atualizarContato(req, res) {
+async function atualizarContato(req, res) {
   const id = req.params.id;
   const dados = req.body;
 
@@ -104,20 +97,15 @@ function atualizarContato(req, res) {
     });
   }
 
-  const atualizar = db.prepare(`
-        UPDATE contatos
-        SET nome = ?, email = ?, mensagem = ?
-        WHERE id = ?
-    `);
-
-  const resultado = atualizar.run(
-    dados.nome.trim(),
-    dados.email.trim(),
-    dados.mensagem.trim(),
-    id,
+  const resultado = await dbPostgres.query(
+    `UPDATE contatos
+     SET nome = $1, email = $2, mensagem = $3
+     WHERE id = $4
+     RETURNING *`,
+    [dados.nome.trim(), dados.email.trim(), dados.mensagem.trim(), id],
   );
 
-  if (resultado.changes === 0) {
+  if (resultado.rowCount === 0) {
     return res.status(404).json({
       mensagem: "Contato não encontrado.",
     });

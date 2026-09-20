@@ -12,8 +12,6 @@ const authRoutes = require("./routes/authRoutes");
 
 const verificarAutenticacao = require("./middlewares/authMiddleware");
 
-require("./database/database");
-
 const app = express();
 
 app.use(express.json());
