@@ -6,6 +6,8 @@ const express = require("express");
 
 const session = require("express-session");
 
+const helmet = require("helmet");
+
 const contatoRoutes = require("./routes/contatoRoutes");
 
 const authRoutes = require("./routes/authRoutes");
@@ -13,6 +15,8 @@ const authRoutes = require("./routes/authRoutes");
 const verificarAutenticacao = require("./middlewares/authMiddleware");
 
 const app = express();
+
+app.use(helmet());
 
 app.use(express.json());
 
