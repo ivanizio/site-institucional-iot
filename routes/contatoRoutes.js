@@ -8,14 +8,29 @@ const contatoController = require("../controllers/contatoController");
 
 const verificarAutenticacao = require("../middlewares/authMiddleware");
 
+const validarId = require("../middlewares/validarIdMiddleware");
+
 router.post("/", contatoLimiter, contatoController.enviarContato);
 
-router.get("/", verificarAutenticacao, contatoController.listarContatos);
+router.get(
+  "/:id",
+  verificarAutenticacao,
+  validarId,
+  contatoController.buscarContatoPorId,
+);
 
-router.get("/:id", verificarAutenticacao, contatoController.buscarContatoPorId);
+router.delete(
+  "/:id",
+  verificarAutenticacao,
+  validarId,
+  contatoController.excluirContato,
+);
 
-router.delete("/:id", verificarAutenticacao, contatoController.excluirContato);
+router.put(
+  "/:id",
+  verificarAutenticacao,
+  validarId,
+  contatoController.atualizarContato,
+);
 
 module.exports = router;
-
-router.put("/:id", verificarAutenticacao, contatoController.atualizarContato);
