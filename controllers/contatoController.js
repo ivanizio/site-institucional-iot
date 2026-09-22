@@ -3,15 +3,43 @@ const dbPostgres = require("../database/postgres");
 async function enviarContato(req, res) {
   const dados = req.body;
 
+  if (
+    typeof dados.nome !== "string" ||
+    typeof dados.email !== "string" ||
+    typeof dados.mensagem !== "string"
+  ) {
+    return res.status(400).json({
+      mensagem: "Nome, e-mail e mensagem devem ser textos.",
+    });
+  }
+
   if (!dados.nome?.trim() || !dados.email?.trim() || !dados.mensagem?.trim()) {
     return res.status(400).json({
       mensagem: "Todos os campos são obrigatórios.",
     });
   }
 
+  if (dados.nome.trim().length > 100) {
+    return res.status(400).json({
+      mensagem: "O nome deve ter no máximo 100 caracteres.",
+    });
+  }
+
+  if (dados.email.trim().length > 150) {
+    return res.status(400).json({
+      mensagem: "O e-mail deve ter no máximo 150 caracteres.",
+    });
+  }
+
+  if (dados.mensagem.trim().length > 2000) {
+    return res.status(400).json({
+      mensagem: "A mensagem deve ter no máximo 2000 caracteres.",
+    });
+  }
+
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!emailValido.test(dados.email)) {
+  if (!emailValido.test(dados.email.trim())) {
     return res.status(400).json({
       mensagem: "Informe um e-mail válido.",
     });
@@ -103,10 +131,7 @@ async function excluirContato(req, res) {
       mensagem: "Contato excluído com sucesso.",
     });
   } catch (erro) {
-    console.error(
-      "Erro ao excluir contato:",
-      erro.message,
-    );
+    console.error("Erro ao excluir contato:", erro.message);
 
     return res.status(500).json({
       mensagem: "Erro interno do servidor.",
@@ -118,15 +143,43 @@ async function atualizarContato(req, res) {
   const id = req.params.id;
   const dados = req.body;
 
-  if (!dados.nome?.trim() || !dados.email?.trim() || !dados.mensagem?.trim()) {
+  if (
+    typeof dados.nome !== "string" ||
+    typeof dados.email !== "string" ||
+    typeof dados.mensagem !== "string"
+  ) {
     return res.status(400).json({
-      mensagem: "Todos os campos são obrigatórios.",
+      mensagem: "Nome, e-mail e mensagem devem ser textos.",
+    });
+  }
+
+  if (!dados.nome.trim() || !dados.email.trim() || !dados.mensagem.trim()) {
+  return res.status(400).json({
+    mensagem: "Todos os campos são obrigatórios.",
+  });
+}
+
+  if (dados.nome.trim().length > 100) {
+    return res.status(400).json({
+      mensagem: "O nome deve ter no máximo 100 caracteres.",
+    });
+  }
+
+  if (dados.email.trim().length > 150) {
+    return res.status(400).json({
+      mensagem: "O e-mail deve ter no máximo 150 caracteres.",
+    });
+  }
+
+  if (dados.mensagem.trim().length > 2000) {
+    return res.status(400).json({
+      mensagem: "A mensagem deve ter no máximo 2000 caracteres.",
     });
   }
 
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!emailValido.test(dados.email)) {
+  if (!emailValido.test(dados.email.trim())) {
     return res.status(400).json({
       mensagem: "Informe um e-mail válido.",
     });

@@ -12,6 +12,8 @@ const validarId = require("../middlewares/validarIdMiddleware");
 
 router.post("/", contatoLimiter, contatoController.enviarContato);
 
+router.get("/", verificarAutenticacao, contatoController.listarContatos);
+
 router.get(
   "/:id",
   verificarAutenticacao,
