@@ -1,6 +1,13 @@
 const dbPostgres = require("../database/postgres");
 
 function validarDadosContato(dados) {
+  if (!dados || typeof dados !== "object" || Array.isArray(dados)) {
+    return {
+      valido: false,
+      mensagem: "Dados de contato inválidos.",
+    };
+  }
+
   if (
     typeof dados.nome !== "string" ||
     typeof dados.email !== "string" ||
