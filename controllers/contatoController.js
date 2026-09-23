@@ -1,47 +1,67 @@
 const dbPostgres = require("../database/postgres");
 
-async function enviarContato(req, res) {
-  const dados = req.body;
-
+function validarDadosContato(dados) {
   if (
     typeof dados.nome !== "string" ||
     typeof dados.email !== "string" ||
     typeof dados.mensagem !== "string"
   ) {
-    return res.status(400).json({
+    return {
+      valido: false,
       mensagem: "Nome, e-mail e mensagem devem ser textos.",
-    });
+    };
   }
 
-  if (!dados.nome?.trim() || !dados.email?.trim() || !dados.mensagem?.trim()) {
-    return res.status(400).json({
+  if (!dados.nome.trim() || !dados.email.trim() || !dados.mensagem.trim()) {
+    return {
+      valido: false,
       mensagem: "Todos os campos são obrigatórios.",
-    });
+    };
   }
 
   if (dados.nome.trim().length > 100) {
-    return res.status(400).json({
+    return {
+      valido: false,
       mensagem: "O nome deve ter no máximo 100 caracteres.",
-    });
+    };
   }
 
   if (dados.email.trim().length > 150) {
-    return res.status(400).json({
+    return {
+      valido: false,
       mensagem: "O e-mail deve ter no máximo 150 caracteres.",
-    });
+    };
   }
 
   if (dados.mensagem.trim().length > 2000) {
-    return res.status(400).json({
+    return {
+      valido: false,
       mensagem: "A mensagem deve ter no máximo 2000 caracteres.",
-    });
+    };
   }
 
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailValido.test(dados.email.trim())) {
-    return res.status(400).json({
+    return {
+      valido: false,
       mensagem: "Informe um e-mail válido.",
+    };
+  }
+
+  return {
+    valido: true,
+  };
+}
+
+async function enviarContato(req, res) {
+  const dados = req.body;
+
+  const validacao = validarDadosContato(dados);
+
+  if (!validacao.valido) {
+    return res.status(400).json({
+      mensagem: validacao.mensagem,
     });
   }
 
@@ -143,45 +163,11 @@ async function atualizarContato(req, res) {
   const id = req.params.id;
   const dados = req.body;
 
-  if (
-    typeof dados.nome !== "string" ||
-    typeof dados.email !== "string" ||
-    typeof dados.mensagem !== "string"
-  ) {
+  const validacao = validarDadosContato(dados);
+
+  if (!validacao.valido) {
     return res.status(400).json({
-      mensagem: "Nome, e-mail e mensagem devem ser textos.",
-    });
-  }
-
-  if (!dados.nome.trim() || !dados.email.trim() || !dados.mensagem.trim()) {
-  return res.status(400).json({
-    mensagem: "Todos os campos são obrigatórios.",
-  });
-}
-
-  if (dados.nome.trim().length > 100) {
-    return res.status(400).json({
-      mensagem: "O nome deve ter no máximo 100 caracteres.",
-    });
-  }
-
-  if (dados.email.trim().length > 150) {
-    return res.status(400).json({
-      mensagem: "O e-mail deve ter no máximo 150 caracteres.",
-    });
-  }
-
-  if (dados.mensagem.trim().length > 2000) {
-    return res.status(400).json({
-      mensagem: "A mensagem deve ter no máximo 2000 caracteres.",
-    });
-  }
-
-  const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!emailValido.test(dados.email.trim())) {
-    return res.status(400).json({
-      mensagem: "Informe um e-mail válido.",
+      mensagem: validacao.mensagem,
     });
   }
 
