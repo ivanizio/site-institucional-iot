@@ -9,7 +9,7 @@ formContato.addEventListener("submit", function (event) {
 
   const mensagemConfirmacao = document.querySelector("#mensagemConfirmacao");
 
-  fetch("http://localhost:3000/contato", {
+  fetch("/contato", {
     method: "POST",
 
     headers: {
