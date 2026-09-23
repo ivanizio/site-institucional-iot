@@ -12,6 +12,8 @@ const contatoRoutes = require("./routes/contatoRoutes");
 
 const authRoutes = require("./routes/authRoutes");
 
+const tratarErros = require("./middlewares/errorMiddleware");
+
 const verificarAutenticacao = require("./middlewares/authMiddleware");
 
 const app = express();
@@ -56,6 +58,8 @@ app.get("/", (req, res) => {
 app.get("/teste", (req, res) => {
   res.send("Rota de teste funcionando com Express!");
 });
+
+app.use(tratarErros);
 
 app.listen(PORTA, () => {
   console.log(`Servidor rodando em http://localhost:${PORTA}`);
