@@ -86,7 +86,7 @@ async function enviarContato(req, res) {
       mensagem: "Mensagem enviada com sucesso!",
     });
   } catch (erro) {
-    console.error("Erro ao salvar contato:", erro.message);
+    console.error("Erro ao salvar contato:", erro);
 
     return res.status(500).json({
       mensagem: "Erro interno do servidor.",
