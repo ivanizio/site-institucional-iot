@@ -18,11 +18,6 @@ const verificarAutenticacao = require("./middlewares/authMiddleware");
 
 const app = express();
 
-console.log(
-  "DATABASE_URL disponível:",
-  Boolean(process.env.DATABASE_URL)
-);
-
 app.use(helmet());
 
 app.use(express.json());
