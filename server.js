@@ -6,7 +6,11 @@ const express = require("express");
 
 const session = require("express-session");
 
+const pgSession = require("connect-pg-simple")(session);
+
 const helmet = require("helmet");
+
+const dbPostgres = require("./database/postgres");
 
 const contatoRoutes = require("./routes/contatoRoutes");
 
@@ -24,6 +28,10 @@ app.use(express.json());
 
 app.use(
   session({
+    store: new pgSession({
+      pool: dbPostgres,
+      createTableIfMissing: true,
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
