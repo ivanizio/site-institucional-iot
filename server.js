@@ -22,6 +22,8 @@ const verificarAutenticacao = require("./middlewares/authMiddleware");
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 app.use(helmet());
 
 app.use(express.json());
@@ -37,6 +39,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 30 * 60 * 1000,
     },
