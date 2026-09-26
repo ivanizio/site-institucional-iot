@@ -22,11 +22,6 @@ const verificarAutenticacao = require("./middlewares/authMiddleware");
 
 const app = express();
 
-console.log(
-  "NODE_ENV:",
-  process.env.NODE_ENV
-);
-
 app.set("trust proxy", 1);
 
 app.use(helmet());
