@@ -204,4 +204,13 @@ fetch("/contato")
   })
   .catch((erro) => {
     console.error("Erro ao buscar contatos:", erro);
+
+    const linha = document.createElement("tr");
+    const celula = document.createElement("td");
+
+    celula.textContent = "Não foi possível carregar os contatos.";
+    celula.colSpan = 6;
+
+    linha.appendChild(celula);
+    listaContatos.appendChild(linha);
   });
