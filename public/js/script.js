@@ -40,6 +40,12 @@ formContato.addEventListener("submit", function (event) {
     .catch((erro) => {
       console.error("Erro ao enviar mensagem:", erro);
 
+      if (erro instanceof TypeError) {
+        mensagemConfirmacao.textContent =
+          "Não foi possível enviar sua mensagem. Tente novamente mais tarde.";
+        return;
+      }
+
       mensagemConfirmacao.textContent = erro.message;
     });
 });
