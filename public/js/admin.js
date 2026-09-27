@@ -97,6 +97,18 @@ fetch("/contato")
     return resposta.json();
   })
   .then((contatos) => {
+    if (contatos.length === 0) {
+      const linha = document.createElement("tr");
+      const celula = document.createElement("td");
+
+      celula.textContent = "Nenhum contato recebido até o momento.";
+      celula.colSpan = 6;
+
+      linha.appendChild(celula);
+      listaContatos.appendChild(linha);
+
+      return;
+    }
     contatos.forEach((contato) => {
       const linha = document.createElement("tr");
 
